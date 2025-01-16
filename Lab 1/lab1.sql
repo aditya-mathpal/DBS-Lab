@@ -1,4 +1,4 @@
-SAMPLE:
+-- SAMPLE:
 CREATE TABLE BRANCH 
 (BRANCH_NAME VARCHAR (15) PRIMARY KEY, 
 BRANCH_CITY VARCHAR (20), 
@@ -33,7 +33,7 @@ insert into loan values (45643211,'SBIMN',50000);
 insert into depositor values ('Aditya Mathpal',230905);
 insert into borrower values('Person',45643211);
 
-LAB-1:
+-- LAB-1:
 -- 1
 create table employee (
   emp_no number(10) primary key,
@@ -51,6 +51,7 @@ insert into employee values (5,'Selina','Manipal');
 -- 3
 select emp_name from employee;
 
+/*
 EMP_NAME
 ---------------
 John
@@ -58,13 +59,16 @@ Jane
 Wayne
 Kent
 Selina
+*/
 
 -- 4
 select * from employee where emp_address = 'Manipal';
+/*
 
     EMP_NO EMP_NAME        EMP_ADDRESS
 ---------- --------------- --------------------
          5 Kyle            Manipal
+*/
 
 -- 5
 alter table employee add (salary number(9));
@@ -78,12 +82,14 @@ update employee set salary = 35000 where emp_no = 5;
 
 -- 7
 desc employee;
+/*
  Name                                      Null?    Type
  ----------------------------------------- -------- ----------------------------
  EMP_NO                                    NOT NULL NUMBER(10)
  EMP_NAME                                           VARCHAR2(15)
  EMP_ADDRESS                                        VARCHAR2(20)
  SALARY                                             NUMBER(9)
+*/
 
 -- 8
 delete from employee where emp_address = 'Mangalore';
