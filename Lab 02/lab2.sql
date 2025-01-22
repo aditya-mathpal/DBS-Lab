@@ -106,7 +106,7 @@ select empname, to_char(dob,'DD-MON-YYYY') as date_of_birth from employee;
 select empname, to_char(dob,'DD-MON-YY') as date_of_birth from employee;
 select empname, to_char(dob,'DD-MM-YY') as date_of_birth from employee;
 
--- 26
+-- 25
 select empname, to_char(dob,'YEAR') as year_of_birth from employee;
 select empname, to_char(dob,'Year') as year_of_birth from employee;
 select empname, to_char(dob,'year') as year_of_birth from employee;
