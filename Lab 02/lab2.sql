@@ -21,10 +21,10 @@ create table department (
 alter table employee add constraint c1 foreign key (DNo) references department (DeptNo);
 
 -- 4
-insert into employee values (101,'Aditya','M',10000000,'Mumbai',5);
-insert into employee values (102,'Aditi','F',9000000,'Delhi',6);
 insert into department values (5,'IT','Bangalore');
 insert into department values (6,'Sales','Mumbai');
+insert into employee values (101,'Aditya','M',10000000,'Mumbai',5);
+insert into employee values (102,'Aditi','F',9000000,'Delhi',6);
 
 -- 5
 insert into employee values (101,'John','X',10,'Mumbai',5); -- gender check constraint violated
@@ -65,3 +65,48 @@ select t.course_id, c.title from course c, takes t where t.course_id = c.course_
 select * from instructor where (salary > 40000) and (salary < 90000);
 
 -- 14
+select id from instructor where id not in (
+    select distinct id from teaches
+);
+
+-- 15
+select s.name, c.title, t.year from student s, course c, takes t, classroom class, department d where class.room_number = 303 and class.building = d.building and d.dept_name = c.dept_name and c.course_id = t.course_id and s.id = t.id;
+
+-- 16
+select s.name, c.course_id, c.title as c_name from student s, course c, takes t where t.year = 2015 and t.id = s.id and t.course_id = c.course_id;
+
+-- 17
+select name, salary as inst_salary from instructor where salary > any (select salary from instructor where dept_name = 'Comp. Sci.');
+
+-- 18
+select name from instructor where dept_name like '%ch%';
+
+-- 19
+select name, length(name) from student;
+
+-- 20
+select dept_name, substr(dept_name, 3, 1) from department;
+
+-- 21
+select upper(name) as name from instructor;
+
+-- 22
+select nvl(tot_cred, 0) as tot-cred from student;
+
+-- 23
+select salary, round(salary/3,-2) from instructor;
+
+-- add dob column and insert values
+alter table employee add dob date;
+update employee set dob = to_date('11-04-2005','DD-MM-YYYY') where empname = 'Aditya';
+update employee set dob = to_date('04-03-2009','DD-MM-YYYY') where empname = 'Aditi';
+
+-- 24
+select empname, to_char(dob,'DD-MON-YYYY') as date_of_birth from employee;
+select empname, to_char(dob,'DD-MON-YY') as date_of_birth from employee;
+select empname, to_char(dob,'DD-MM-YY') as date_of_birth from employee;
+
+-- 26
+select empname, to_char(dob,'YEAR') as year_of_birth from employee;
+select empname, to_char(dob,'Year') as year_of_birth from employee;
+select empname, to_char(dob,'year') as year_of_birth from employee;
