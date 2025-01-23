@@ -48,3 +48,8 @@ select unique d.dept_name from department d, instructor i where d.budget < (sele
 
 -- 13
 select course_id, title from course where exists (select 1 from teaches where semester = 'Fall' and year = 2009 intersect select 1 from teaches where semester = 'Spring' and year = 2010);
+
+-- 14
+select s.id, s.name from student s where not exists(select 1 from course c where c.dept_name = 'Biology' and not exists (select 1 from takes t where t.id = s.id and t.course_id = c.course_id));
+
+-- 15
