@@ -111,7 +111,7 @@ create table time_slot
 	 end_hr		numeric(2) check (end_hr >= 0 and end_hr < 24),
 	 end_min		numeric(2) check (end_min >= 0 and end_min < 60),
 	 primary key (time_slot_id, day, start_hr, start_min)
-	); //done
+	);
 
 create table prereq
 	(course_id		varchar(8), 
