@@ -85,7 +85,7 @@ select name from instructor where dept_name like '%ch%';
 select name, length(name) from student;
 
 -- 20
-select dept_name, substr(dept_name, 3, 1) from department;
+select dept_name, substr(dept_name, 3, 3) from department;
 
 -- 21
 select upper(name) as name from instructor;
