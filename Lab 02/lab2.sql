@@ -91,7 +91,7 @@ select dept_name, substr(dept_name, 3, 3) from department;
 select upper(name) as name from instructor;
 
 -- 22
-select nvl(tot_cred, 0) as tot-cred from student;
+select nvl(tot_cred, 0) as tot_cred from student;
 
 -- 23
 select salary, round(salary/3,-2) from instructor;
