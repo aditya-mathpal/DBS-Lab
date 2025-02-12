@@ -3,7 +3,9 @@
 /*
 1. Find the number of students in each course.
 */
-select t.course_id, count(s.id) as student_count from student s, takes t group by course_id;
+select course_id, count(id) as student_count
+from takes
+group by course_id;
 
 /*
 2. Find those departments where the number of students is at least 4.
@@ -54,33 +56,33 @@ select * from instructor order by salary desc;
 8. Find the maximum total salary across the departments.
 */
 select dept_name, max(salary) as max_salary
-from instructor
+from (select * from instructor)
 group by dept_name;
 
 /*
 9. Find the average instructors’ salaries of those departments where the average 
 salary is greater than 42000.
 */
-select dept_name, round(avg(salary)) as avg_salary
-from instructor
-group by dept_name
-having avg(salary) > 42000;
+select dept_name, round(avg_salary) as avg_salary
+from (select dept_name, avg(salary) as avg_salary
+    from instructor
+    group by dept_name
+    having avg(salary) > 42000
+);
 
 /*
 10. Find the sections that had the maximum enrolment in Spring 2010
 */
-select s.semester, s.year, s.sec_id, count(distinct t.id) as student_count
-from takes t, section s
-where s.semester = t.semester and s.semester = 'Spring' and s.year = t.year and s.year = 2010 and t.sec_id = s.sec_id
-group by s.semester, s.year, s.sec_id
-having count(distinct t.id) = (
-    select max(student_count) from (
-        select count(distinct t.id) as student_count
-        from takes t, section s
-        where s.semester = t.semester and s.semester = 'Spring' and s.year = t.year and s.year = 2010 and t.sec_id = s.sec_id
-        group by s.semester, s.year, s.sec_id
-    )
-);
+with DerivedRelation as (
+    select s.semester, s.year, s.sec_id, count(distinct t.id) as student_count
+    from takes t
+    join section s on s.semester = t.semester and s.year = t.year and s.sec_id = t.sec_id
+    where s.semester = 'Spring' and s.year = 2010
+    group by s.semester, s.year, s.sec_id
+)
+select semester, year, sec_id, student_count
+from DerivedRelation
+where student_count = (select max(student_count) from DerivedRelation);
 
 /*
 11. Find  the  names  of  all  instructors  who  teach  all students that belong to ‘CSE’ 
