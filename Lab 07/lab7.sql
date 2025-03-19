@@ -133,18 +133,80 @@ Roll No 5 Grade: A+
 5. Alter StudentTable by appending an additional column LetterGrade Varchar2(2). 
 Then write a PL/SQL block  to update the table with letter grade of each student.
 */
-
+alter table studenttable add lettergrade varchar2(2);
+begin
+    for i in (select * from studenttable) loop
+        if i.gpa < 4 then update studenttable set lettergrade = 'F' where rollno = i.rollno;
+        elsif i.gpa < 5 then update studenttable set lettergrade = 'E' where rollno = i.rollno;
+        elsif i.gpa < 6 then update studenttable set lettergrade = 'D' where rollno = i.rollno;
+        elsif i.gpa < 7 then update studenttable set lettergrade = 'C' where rollno = i.rollno;
+        elsif i.gpa < 8 then update studenttable set lettergrade = 'B' where rollno = i.rollno;
+        elsif i.gpa < 9 then update studenttable set lettergrade = 'A' where rollno = i.rollno;
+        elsif i.gpa <= 10 then update studenttable set lettergrade = 'A+' where rollno = i.rollno;
+        end if;
+    end loop;
+end;
+/
+/*
+output:
+ROLLNO	GPA	LETTERGRADE
+1	    5.8	D
+2	    6.5	C
+3	    3.4	F
+4	    7.8	B
+5	    9.5	A+
 
 /*
 6. Write a PL/SQL block to find the student with max. GPA without using aggregate 
 function.
 */
-
+declare
+    maxgpa number(3,2);
+    roll number(2);
+begin
+    maxgpa := 0;
+    for i in (select * from studenttable) loop
+        if i.gpa > maxgpa then
+            maxgpa := i.gpa;
+            roll := i.rollno;
+        end if;
+    end loop;
+    dbms_output.put_line('Roll No: ' || roll || ' GPA: ' || maxgpa);
+end;
+/
+/*
+output:
+Roll No: 5 GPA: 9.5
+*/
 
 /*
 7. Implement lab exercise 4 using GOTO.
 */
-
+declare
+    grade char(2);
+    g number(3,2);
+begin
+    for i in (select * from studenttable) loop
+        if i.gpa < 4 then grade := 'F'; goto print; end if;
+        if i.gpa < 5 then grade := 'E'; goto print; end if;
+        if i.gpa < 6 then grade := 'D'; goto print; end if;
+        if i.gpa < 7 then grade := 'C'; goto print; end if;
+        if i.gpa < 8 then grade := 'B'; goto print; end if;
+        if i.gpa < 9 then grade := 'A'; goto print; end if;
+        grade := 'A+';
+        <<print>>
+        dbms_output.put_line('Roll No ' || i.rollno || ' Grade: ' || grade);
+    end loop;
+end;
+/
+/*
+output:
+Roll No 1 Grade: D 
+Roll No 2 Grade: C 
+Roll No 3 Grade: F 
+Roll No 4 Grade: B 
+Roll No 5 Grade: A+
+*/
 
 /*
 8. Based  on  the  University  database  schema,  write  a  PL/SQL  block  to  display  the 
@@ -152,4 +214,21 @@ details  of  the  Instructor  whose  name  is  supplied  by  the  user.  Use  ex
 show appropriate error message for the following cases: 
 a. Multiple instructors with the same name 
 b. No instructor for the given name
+*/
+declare
+    n varchar2(20);
+    i instructor%rowtype;
+begin
+    n := &n;
+    select * into i from instructor where name = n;
+    dbms_output.put_line('ID: ' || i.id || ' Name: ' || i.name || ' Dept: ' || i.dept_name);
+exception
+    when no_data_found then dbms_output.put_line('No instructor found for the given name');
+    when too_many_rows then dbms_output.put_line('Multiple instructors with the same name');
+end;
+/
+/*
+output:
+Enter value for n: Mozart
+ID: 15151 Name: Mozart Dept: Music
 */
