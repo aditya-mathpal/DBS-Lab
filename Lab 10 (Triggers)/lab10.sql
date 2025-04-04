@@ -165,8 +165,6 @@ create or replace trigger del
 instead of delete on Advisor_Student
 for each row begin
     delete from advisor where s_id = :old.s_id or i_id = :old.i_id;
-    delete from student where id = :old.s_id;
-    delete from instructor where id = :old.i_id;
 end;
 /
 
